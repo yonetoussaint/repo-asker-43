@@ -270,6 +270,14 @@ const SpaceSavingCategories: React.FC<SpaceSavingCategoriesProps> = ({
     try {
       console.log('🔍 Fetching user data counts for user:', userId);
 
+      // Check current session to see actual authenticated user
+      const { data: { session } } = await supabase.auth.getSession();
+      console.log('🔐 Current session:', {
+        user_id: session?.user?.id,
+        email: session?.user?.email,
+        matches_context: session?.user?.id === userId
+      });
+
       // First, run debug to see what's in the database
       await debugDatabaseState(userId);
 
@@ -283,29 +291,24 @@ const SpaceSavingCategories: React.FC<SpaceSavingCategoriesProps> = ({
       ] = await Promise.all([
         supabase
           .from('wishlist')
-          .select('id')
-          .eq('user_id', userId),
+          .select('id'),
 
         supabase
           .from('cart')
-          .select('id')
-          .eq('user_id', userId),
+          .select('id'),
 
         supabase
           .from('notifications')
           .select('id')
-          .eq('user_id', userId)
           .eq('is_read', false),
 
         supabase
           .from('user_addresses')
-          .select('id')
-          .eq('user_id', userId),
+          .select('id'),
 
         supabase
           .from('help_tickets')
           .select('id')
-          .eq('user_id', userId)
           .eq('status', 'open')
       ]);
 
