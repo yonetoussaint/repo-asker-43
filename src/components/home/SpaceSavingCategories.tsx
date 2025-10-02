@@ -309,9 +309,31 @@ const SpaceSavingCategories: React.FC<SpaceSavingCategoriesProps> = ({
           .eq('status', 'open')
       ]);
 
-      console.log('📊 Wishlist result:', wishlistResult);
-      console.log('📊 Cart result:', cartResult);
-      console.log('📊 Notifications result:', notificationsResult);
+      console.log('📊 Wishlist result:', {
+        data: wishlistResult.data,
+        error: wishlistResult.error,
+        count: wishlistResult.count,
+        status: wishlistResult.status,
+        statusText: wishlistResult.statusText
+      });
+      console.log('📊 Cart result:', {
+        data: cartResult.data,
+        error: cartResult.error,
+        count: cartResult.count
+      });
+      console.log('📊 Notifications result:', {
+        data: notificationsResult.data,
+        error: notificationsResult.error,
+        count: notificationsResult.count
+      });
+      console.log('📊 Addresses result:', {
+        data: addressesResult.data,
+        error: addressesResult.error
+      });
+      console.log('📊 Help tickets result:', {
+        data: helpTicketsResult.data,
+        error: helpTicketsResult.error
+      });
 
       const counts = {
         wishlist: wishlistResult.data?.length || 0,
@@ -322,6 +344,13 @@ const SpaceSavingCategories: React.FC<SpaceSavingCategoriesProps> = ({
       };
 
       console.log('✅ Final counts:', counts);
+      console.log('✅ Final counts breakdown:', {
+        wishlist: `${wishlistResult.data?.length || 0} items`,
+        cart: `${cartResult.data?.length || 0} items`,
+        notifications: `${notificationsResult.data?.length || 0} unread`,
+        addresses: `${addressesResult.data?.length || 0} addresses`,
+        help: `${helpTicketsResult.data?.length || 0} open tickets`
+      });
       return counts;
     } catch (error) {
       console.error('❌ Error fetching user data counts:', error);
