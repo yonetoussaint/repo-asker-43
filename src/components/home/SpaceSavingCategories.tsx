@@ -478,11 +478,17 @@ const SpaceSavingCategories: React.FC<SpaceSavingCategoriesProps> = ({
   useEffect(() => {
     let mounted = true;
 
+    console.log('🚀 SpaceSavingCategories useEffect triggered');
+    console.log('👤 User object:', user);
+    console.log('📍 User ID:', user?.id);
+
     const loadData = async () => {
       try {
+        console.log('🔄 Starting loadData for user:', user?.id);
         await fetchUserCategoryOrder();
+        console.log('✅ loadData completed successfully');
       } catch (error) {
-        console.error('Failed to load category data:', error);
+        console.error('❌ Failed to load category data:', error);
         if (mounted) {
           setCategories(defaultCategories.map(cat => ({ ...cat, count: 0 })));
           setIsLoading(false);
@@ -491,8 +497,10 @@ const SpaceSavingCategories: React.FC<SpaceSavingCategoriesProps> = ({
     };
 
     if (user) {
+      console.log('✅ User exists, calling loadData');
       loadData();
     } else {
+      console.log('⚠️ No user found, skipping loadData');
       setIsLoading(false);
       setCategories([]);
     }
